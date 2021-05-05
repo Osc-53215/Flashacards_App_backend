@@ -2,6 +2,7 @@ const {Flashcard, validate} = require('../models/flashcards')
 const express = require('express');
 const router = express.Router();
 
+// GET
 
 router.get('/', async (req, res) => {
     try {
@@ -12,16 +13,24 @@ router.get('/', async (req, res) => {
     }
 })
 
+// GET BY ID
 
 
+router.get('/:id', async (req, res) => {
+    try {
 
+        const flashcard = await Flashcard.findById(req.params.id);
 
+        if (!flashcard)
+            return res.status(400).send(`The flashcard with the id '${req.params.id}' does not exist.`);
+        return res.send(flashcard);
 
+    }   catch (ex) {
+        return res.status(500).send(`Inetrnal Server Error: ${ex}`);
+    }
+})
 
-
-
-
-
+// POST
 
 
 router.post('/', async (req, res) => {
