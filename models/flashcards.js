@@ -20,5 +20,3 @@ function validateFlashcard(flashcard) {
 exports.Flashcard = Flashcard;
 exports.validate = validateFlashcard;
 exports.flashcardSchema = flashcardSchema;
-
-module.exports = Flashcard;
