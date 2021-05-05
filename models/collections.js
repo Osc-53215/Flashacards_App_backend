@@ -1,20 +1,22 @@
 const mongoose = require('mongoose');
 const Joi = require('joi');
-const Flashcard = require("./flashcards")
+const {flashcardSchema} = require("./flashcards")
 
 const collectionSchema = new mongoose.Schema({
     name: {type: String, required: true},
-    cards: [Flashcard.schema]
-})
+    isGoldMember: {type: Boolean, default: false},
+    cards: {type: [flashcardSchema], default: []},
+});
 
 const Collection = mongoose.model('Collection', collectionSchema);
 
-// function validateFlashcard(flashcard) {
-//     const schema = Joi.object({
-//         name: Joi.string().min(2).max(50).required(),
-//     })
-// }
+function validateCollection(collection) {
+    const schema = Joi.object({
+        name: Joi.string().required(),
+    });
+    return schema.validate(collection);
+}
 
-
-
-module.exports = Collection;
+exports.Collection =  Collection;
+exports.validate = validateCollection;
+exports.collectionSchema = collectionSchema;

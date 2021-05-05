@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
 
 //  PUT 
 
-router.post('/', async (req, res) => {
+router.put('/', async (req, res) => {
     try {
         const {error} = validate(req.body);
         if (error)
@@ -81,7 +81,21 @@ router.post('/', async (req, res) => {
     }
 })
 
+//  DELETE
 
+router.delete('/:id', async (req, res) => {
+    try {
+
+        const flashcard = await Flashcard.findByIdAndRemove(req.params.id);
+
+        if (!flashcard)
+            return res.status(400).send(`The flashcard with the id '${req.params.id}' does not exist.`);
+        return res.send(flashcard);
+
+    }   catch (ex) {
+        return res.status(500).send(`Inetrnal Server Error: ${ex}`);
+    }
+})
 
 
 
