@@ -15,7 +15,6 @@ router.get('/', async (req, res) => {
 
 // GET BY ID
 
-
 router.get('/:id', async (req, res) => {
     try {
 
@@ -31,7 +30,6 @@ router.get('/:id', async (req, res) => {
 })
 
 // POST
-
 
 router.post('/', async (req, res) => {
     try {
@@ -53,6 +51,40 @@ router.post('/', async (req, res) => {
         return res.status(500).send('Internal Server Error: ' + ex);
     }
 })
+
+//  PUT 
+
+router.post('/', async (req, res) => {
+    try {
+        const {error} = validate(req.body);
+        if (error)
+            return res.status(400).send(error);
+
+        const flashcard = await Flashcard.findByIdAndUpdate(
+            req.params.id,
+            {
+            name: req.body.name,
+            description: req.body.description,
+            category:  req.body.category,
+        },
+        {new: true}
+    );
+
+    if (!flashcard)
+        return res.status(400).send(`The flashcard with the id '${req.params.id}' does not exist.`);
+
+        await flashcard.save();
+
+        return res.send(flashcard);
+    } catch (ex) {
+        return res.status(500).send('Internal Server Error: ' + ex);
+    }
+})
+
+
+
+
+
 
 
 module.exports = router;
