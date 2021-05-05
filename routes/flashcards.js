@@ -1,10 +1,13 @@
-const Flashcard = require('../models/flashcards');
+const {Flashcard, validate} = require('../models/flashcards')
 const express = require('express');
 const router = express.Router();
 
 router.post('/', async (req, res) => {
     try {
-        
+        const {error} = validate(req.body);
+        if (error)
+            return res.status(400).send(error);
+
         const flashcard = new Flashcard({
             name: req.body.name,
             description: req.body.description,
