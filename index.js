@@ -5,11 +5,13 @@ const app = express();
 const flashcards = require('./routes/flashcards');
 const collections = require('./routes/collections')
 
+
 connectDB();
 
 app.use(express.json());
-app.use('/api/collections', flashcards);
+app.use('/api/collection/flashcard', flashcards);
 app.use('/api/collections', collections);
+
 
 
 const port = process.env.PORT || 5000;

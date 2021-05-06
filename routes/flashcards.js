@@ -1,8 +1,28 @@
 const {Flashcard, validate} = require('../models/flashcards')
+const {Collection, validateCollection} = require('../models/collection')
 const express = require('express');
 const router = express.Router();
 
 // GET
+
+router.post('/card', async (req, res) => {
+    try{
+        const {error} = validateCollection(req.body);
+        if (error)
+            return res.status(400).send(error);
+
+        const collection = new Collection({
+            name: req.body.name,
+            cards: []
+        })
+        let result = await collection.save()
+        return res.send(result)
+    }
+    catch{
+        return res.status(500).send(`Internal Server Error: ${ex}, naw`);
+    }
+   
+})
 
 router.get('/', async (req, res) => {
     try {
